@@ -1,0 +1,42 @@
+﻿<script>
+    //function ShowJsonMessageBak(json) {
+    //    var width = $(window).width();
+    //    $("#globalMessageDiv").html(json.Message)
+    //                          .css({ display: "none" })
+    //                          .removeClass("globalMessageBox" + !json.Success)
+    //                          .addClass("globalMessageBox" + json.Success)
+    //                          .css({ "z-index": 10, left: width / 2 - $("#globalMessageDiv").width() / 2 })
+    //                          .slideDown(100, "linear")
+    //                          .animate({ opacity: 1 }, 1500, function () { })
+    //                          .slideUp(100);
+
+    //}
+
+    function ShowJsonMessage(json) {
+
+        var staticValue = true;
+        var styleValue = "warning";
+        var sizeValue = "medium";
+
+        var titleValue = "Warning";
+        var messageValue = "Return Message Is None, Please Check.";
+        if (json != null) {
+
+            staticValue = false;
+            styleValue = "notice";
+            titleValue = "Successful";
+
+            if (!json.Success) {
+                staticValue = true;
+                styleValue = "error";
+                sizeValue = "large";
+                titleValue = "Error"
+            }
+
+            messageValue = json.Message;
+
+        }
+
+        $.growl({ title: titleValue, message: messageValue, static: staticValue, style: styleValue, size: sizeValue });
+    }
+</script>

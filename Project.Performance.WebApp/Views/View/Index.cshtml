@@ -1,0 +1,397 @@
+﻿<div style="margin-top: 10px; text-align: center;">
+    <div class="btn-group">
+        <button type="button" id="executeBtn" class="btn btn-default"><span>Create Data</span><p class="triangle"></p></button>
+    </div>
+    <div class="row panel-group body_div">
+        <div class="left">
+            <div class="div-icon">
+                <a type="button" href="#" class="openfile btn tooltip-show" id="openuserfile" title="Open Configure File">
+                </a>
+                <a type="button" href="#" class="downloadfile btn" title="Save current File to your computer " id="downloadfile">
+                </a>
+                <a type="button" href="#" class="savefile btn" id="saveuserdata" data-toggle="modal" data-target="#SaveModal" style="padding-left: 5px" aria-hidden="true" title="Save current File to Server" data-placement="top">
+                </a>
+                <a type="button" class="samplefile btn" id="OpenSamFile" aria-hidden="true" title="Open Sample File from Server" data-placement="top">Open Sample Files</a>
+            </div>
+            <div class="col-md-6 leftdiv">
+                <div id="ol">
+                    <textarea id="li" disabled="disabled" style="background-color:#ffffff;"></textarea>
+                </div>
+                <textarea name="co" id="c2" onkeyup="keyUp()" oninput="keyUp()" onscroll="G('li').scrollTop = this.scrollTop;"></textarea>
+            </div>
+        </div>
+        <div class="col-md-6 rightdiv">
+            <button id="Sync">&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            <input type="hidden" id="test1234" />
+            <div id="result" class="hide">
+                <span style="font-weight:bolder;margin-left:15px">Projects</span>
+                <ul id="ProjectInfo"></ul>
+                <span style="font-weight:bolder;margin-left:15px">Resources</span>
+                <ul>
+                    <li><span>Required: </span><span id="res_all"></span></li>
+                    <li><span>Finished:  </span><span id="res_done"></span><span id="res_inprogress_text" style="color:red">(Remaining: <span id="res_inprogress"></span>)</span></li>
+                    <li><span>NamePrefix: </span><span id="res_nameprefix"></span></li>
+                    <li><span>Resource pool: </span><span id="res_pool"></span></li>
+                </ul>
+                <span style="font-weight:bolder;margin-left:15px">LookupTables</span>
+                <ul>
+                    <li><span>Required: </span><span id="lookuptable_all"></span></li>
+                    <li><span>Finished:  </span><span id="lookuptable_done"></span><span id="lookuptable_inprogress_text" style="color:red">(Remaining: <span id="lookuptable_inprogress"></span>)</span></li>
+                    <li><span>Name: </span><span id="lookuptable_name"></span></li>
+                </ul>
+                <span style="font-weight: bolder; margin-left: 15px">CustomFields</span>
+                <ul>
+                    <li><span>Required: </span><span id="customfield_all"></span></li>
+                    <li><span>Finished:  </span><span id="customfield_done"></span><span id="customfield_inprogress_text" style="color:red">(Remaining: <span id="customfield_inprogress"></span>)</span></li>
+                    <li><span>Name: </span><span id="customfield_name"></span></li>
+                </ul>
+            </div>
+            <div class="hide" id="processing" style="position:absolute;height:100%;width:100%;top:0px;padding-left:40%;padding-top:40%"><img src="~/Content/images/large-ajax-loader.gif" style="height:20%" /></div>
+        </div>
+    </div>
+    <div class="outputdiv">
+        <div class="outputtitle"><span style="color:#bea9d3;font-size:20px">Output</span></div>
+        <div>
+            <textarea id="output"></textarea>
+        </div>
+    </div>
+</div>
+<a id="download_file" href="" target="_self"></a>
+<script>
+    $("body").ready(function () {
+        $("#c2").val($("#testtest").val());
+        $("#c2").focus();
+    });
+
+    $(document).ready(function () {
+        $("#openuserfile").click(function () {
+            $("#FileUpload").click();
+        });
+
+        $("#c2").on("keyup", function () {
+            document.cookie = "content=" + $("#c2").html().replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+        });
+    });
+    $(function () {
+        $("[data-toggle='popover']").popover();
+    });
+
+    $("#OpenSamFile").on("click", function () {
+        $.ajax({
+            url: '@Url.Action("OpenRemoteSampleFile", "Functions")',
+            dataType: "json",
+            type: "Post",
+            success: function (data) {
+                if (data.All != undefined) {
+                    alert("Call fine");
+                }
+                else {
+                }
+            },
+            error: function (error) {
+            }
+        });
+    });
+
+    $("#Sync").on("click", function () {
+        if ($("#logininput").val() == "Login") {
+            alert("Please login first");
+        }
+        else {
+            $("#Sync").attr("disabled", "disabled");
+            $("#processing").attr("class", "");
+            $("#test1234").text("");
+            $.ajax({
+                url: '@Url.Action("GetProjectCreationStatus", "Functions")',
+                dataType: "json",
+                type: "Post",
+                success: function (data) {
+                    $("#ProjectInfo").find("li").remove();
+                    if (data.ProjCreationInfo != undefined && data.ProjCreationInfo.length > 0) {
+                        $("#test1234").text($("#test1234").text() + "P");
+                        $("#result").attr("class", "");
+                        var ProjInfo = data.ProjCreationInfo;
+                        for (var i = 0; i < ProjInfo.length; i++) {
+                            $("#ProjectInfo").html($("#ProjectInfo").html()
+                                        + "<li><span>" + ProjInfo[i].NamePrefix + "</span></li>"
+                                        + "<li><span>Required: </span><span class=" + "proj_all_" + i.toString() + "></span></li>"
+                                        + "<li><span>Finished: </span><span class=" + "proj_done_" + i.toString() + "></span><span class=" + "proj_inprogress_text_" + i.toString() + " style='color:red'>(Remaining: <span class=" + "proj_inprogress_" + i.toString() + "></span>)</span></li>"
+                                        + "<li><span>TotalProject:</span><span class=" + "proj_total" + "></span></li>"
+                                        );
+                            $(".proj_all_" + i.toString()).text(ProjInfo[i].All);
+                            $(".proj_done_" + i.toString()).text(ProjInfo[i].Finished);
+                            $(".proj_inprogress_" + i.toString()).text(ProjInfo[i].All - ProjInfo[i].Finished);
+                            $(".proj_total").text(data.Total);
+                            //if (ProjInfo[i].All - ProjInfo[i].Finished == 0) {
+                            //    $("#ProjectInfo").html($("#ProjectInfo").html()
+                            //     + "<li><span>CreationTime:</span><span class=" + "ProjectTime" + "></span></li>"
+                            //        );
+                            //    $(".ProjectTime").text(data.CreationTime + "s");
+                            //    $(".ProjectTime").attr("class", "");
+                            //}
+                            //else {
+                            //    $(".ProjectTime").attr("class", "hide");
+                            //}
+                            if (ProjInfo[i].All - ProjInfo[i].Finished <= 0) {
+                                $(".proj_inprogress_text_" + i.toString()).attr("class", "hide");
+                            }
+                            else {
+                                $(".proj_inprogress_text_" + i.toString()).attr("class", "proj_inprogress_text_" + i.toString());
+                            }
+                        }
+                        $("#output").html(data.log);
+                        setTimeout(2000);
+                    }
+                    else {
+                        $("#test1234").text($("#test1234").text() + "F");
+
+                    }
+                    checkUpdateResult();
+                },
+                error: function (data) {
+                    $("#test1234").text($("#test1234").text() + "F");
+                    checkUpdateResult();
+                    $(".proj_total").text(data);
+                }
+            });
+
+            $.ajax({
+                url: '@Url.Action("GetResourceCreationStatus", "Functions")',
+                dataType: "json",
+                type: "Post",
+                success: function (data) {
+                    if (data.All != undefined) {
+                        $("#test1234").text($("#test1234").text() + "P");
+                        $("#result").attr("class", "");
+                        $("#res_all").text(data.All);
+                        $("#res_done").text(data.Finished);
+                        $("#res_inprogress").text(data.All - data.Finished);
+                        $("#res_nameprefix").text(data.Prefix);
+                        $("#res_pool").text(data.PoolCount);
+                        if (data.All - data.Finished <= 0) {
+                            $("#res_inprogress_text").attr("class", "hide");
+                        }
+                        else {
+                            $("#res_inprogress_text").attr("class", "");
+                        }
+                        $("#output").html(data.log);
+                        setTimeout(2000);
+                    }
+                    else {
+                        $("#test1234").text($("#test1234").text() + "F");
+                    }
+                    checkUpdateResult();
+                },
+                error: function (error) {
+                    $("#test1234").text($("#test1234").text() + "F");
+                    checkUpdateResult();
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("GetLookupTableCreationStatus", "Functions")',
+                dataType: "json",
+                type: "Post",
+                success: function (data) {
+                    if (data.All != undefined) {
+                        $("#test1234").text($("#test1234").text() + "P");
+                        $("#result").attr("class", "");
+                        $("#lookuptable_all").text(data.All);
+                        $("#lookuptable_done").text(data.Finished);
+                        $("#lookuptable_inprogress").text(data.All - data.Finished);
+                        $("#lookuptable_name").text(data.Prefix);
+                        if (data.All - data.Finished <= 0) {
+                            $("#lookuptable_inprogress_text").attr("class", "hide");
+                        }
+                        else {
+                            $("#lookuptable_inprogress_text").attr("class", "");
+                        }
+                        $("#output").html(data.log);
+                        setTimeout(2000);
+                    }
+                    else {
+                        $("#test1234").text($("#test1234").text() + "F");
+                    }
+                    checkUpdateResult();
+                },
+                error: function (error) {
+                    $("#test1234").text($("#test1234").text() + "F");
+                    checkUpdateResult();
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("GetCustomFieldStatus", "Functions")',
+                dataType: "json",
+                type: "Post",
+                success: function (data) {
+                    if (data.All != undefined) {
+                        $("#test1234").text($("#test1234").text() + "P");
+                        $("#result").attr("class", "");
+                        $("#customfield_all").text(data.All);
+                        $("#customfield_done").text(data.Finished);
+                        $("#customfield_inprogress").text(data.All - data.Finished);
+                        $("#customfield_name").text(data.Prefix);
+                        if (data.All - data.Finished <= 0) {
+                            $("#customfield_inprogress_text").attr("class", "hide");
+                        }
+                        else {
+                            $("#customfield_inprogress_text").attr("class", "");
+                        }
+                        $("#output").html(data.log);
+                        setTimeout(2000);
+                    }
+                    else {
+                        $("#test1234").text($("#test1234").text() + "F");
+                    }
+                    checkUpdateResult();
+                },
+                error: function (error) {
+                    $("#test1234").text($("#test1234").text() + "F");
+                    checkUpdateResult();
+                }
+            });
+        }
+    });
+    function checkUpdateResult() {
+        if ($("#test1234").text().length == 4) {
+            // Hide progress pic
+            $("#processing").attr("class", "hide");
+            // Enable refresh button
+            $("#Sync").removeAttr("disabled");
+            //if ($("#test1234").text() != "PPPP") {
+            //    alert("Error getting creation status, please refresh again later.");
+            //}
+        }
+    }
+    $("#btnlogin").on("click", function () {
+        $(".div_login_info").find(".p_login_info").remove();
+        document.getElementById("logininput").disabled = "disabled";
+        if ($("#projectserverurl").val() == "" || $("#username").val() == "" || $("#password").val() == "") {
+            alert("Value can't be null！");
+            return false;
+        }
+        else {
+            $.ajax({
+                url: '@Url.Action("LoginServer", "Functions")',
+                dataType: "json",
+                data: {
+                    serverUrl: $("#projectserverurl").val(),
+                    userName: $("#username").val(),
+                    passWord: $("#password").val()
+                },
+                type: "Post",
+                beforeSend: function () {
+                    document.getElementById("logininput").value = "Login......";
+                },
+                success: function (json) {
+                    if (json.Success) {
+                        document.getElementById("logininput").value = "Switch Server";
+                        $(".div_login_info").find(".p_login_info").remove();
+                        $(".div_login_info").html($(".div_login_info").html()
+                                + "<p class='p_login_info'>" + "Logged in as " + "</br>" + $("#username").val() + "</br>" + $("#projectserverurl").val() + "</p>"
+                            );
+                        document.cookie = "password=" + $("#password").val();
+                        document.cookie = "username=" + $("#username").val();
+                        document.cookie = "servername=" + $("#projectserverurl").val();
+                    }
+                    else {
+                        document.getElementById("logininput").value = "Login";
+                        ShowJsonMessage(json);
+                    }
+                    document.getElementById("logininput").disabled = "";
+                },
+                error: function (json) {
+                    ShowJsonMessage(json);
+                    document.getElementById("logininput").disabled = "";
+                }
+            });
+        }
+    });
+    $("#loginModal").on("shown.bs.modal", function () {
+        $(document).ready(function (e) {
+            $(this).keydown(function (e) {
+                if (e.which == "13") {
+                    document.getElementById("btnlogin").click();
+                }
+            })
+        });
+    });
+    $("#downloadfile").click(function () {
+        saveAs(
+              new Blob([$("#c2").val()], { type: "text/plain;charset=" + document.characterSet }), "@(this.ViewBag.Data + '_' + Guid.NewGuid().ToString())"
+        );
+    });
+    $("#executeBtn").click(function () {
+        if ($("#logininput").val() == "Login") {
+            var json = { Success: false, Message: "Please login first !" };
+            ShowJsonMessage(json);
+            return false;
+        }
+        else if ($("#c2").val() == "") {
+            var json = { Success: false, Message: "Please load a data pop config file first !" };
+            ShowJsonMessage(json);
+            return false;
+        }
+        else {
+            var data1 = $("#c2").val();
+            if (data1.toString().match("\<[^<>]+\>.+\<\/[^\/<>]+\>")) {
+                var json = { Success: true, Message: "Execute action is triggered !" };
+                ShowJsonMessage(json);
+
+                $.ajax({
+                    url: '@Url.Action("ExecuteConfig", "Functions")',
+                    //dataType: "json",
+                    data: {
+                        models: data1
+                    },
+                    type: "Post",
+                    success: function (json) {
+                        //var json = { Success: true, Message: "Execute action is triggered." };
+                        //ShowJsonMessage(json);
+                        setTimeout("document.getElementById('growls').parentElement.removeChild(document.getElementById('growls'))", 3000);
+                        setTimeout(document.getElementById("Sync").click(), 5000);
+
+                    },
+                    error: function (XMLHttpRequest, message) {
+                        var json = { Success: false, Message: message };
+                        ShowJsonMessage(json);
+                    }
+                });
+            }
+            else {
+                var json = { Success: false, Message: "Sorry, this doesn't look like a valid config file..." };
+                ShowJsonMessage(json);
+                return false;
+            }
+        }
+    });
+</script>
+<script>
+    $(function () {
+        $.ajax({
+            url: '@Url.Action("ShowSaveFilePartial", "View")',
+            type: "GET",
+            success: function (data) {
+                $("body").append(data);
+            }
+        });
+    });
+
+    $(function () {
+        $.ajax({
+            url: '@Url.Action("Login","View")',
+            type: "GET",
+            success: function (data) {
+                $("body").append(data);
+            }
+        });
+    });
+    $(function () {
+        $.ajax({
+            url: '@Url.Action("ShowOpenFilePartial", "View")',
+            type: "GET",
+            success: function (data) {
+                $("body").append(data);
+            }
+        });
+    });
+</script>

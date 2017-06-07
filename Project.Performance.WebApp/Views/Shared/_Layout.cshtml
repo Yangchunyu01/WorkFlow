@@ -1,0 +1,117 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=10|Edge(Default)" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title Project-Performance</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/growl/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/growl")
+    @Scripts.Render("~/bundles/toolScript")
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        function loadcookie() {
+            var cookies = document.cookie.split(";");
+            for (i = 0; i < cookies.length; i++) {
+                if (cookies[i].indexOf("password=") > -1) {
+                    var password = cookies[i].split("password=")[1];
+                    $("#password").val(password);
+                }
+                else if (cookies[i].indexOf("username=") > -1) {
+                    var username = cookies[i].split("username=")[1];
+                    $("#username").val(username);
+                }
+                else if (cookies[i].indexOf("servername=") > -1) {
+                    var servername = cookies[i].split("servername=")[1];
+                    $("#projectserverurl").val(servername);
+                }
+                else if (cookies[i].indexOf("content=") > -1) {
+                    var content = cookies[i].split("content=")[1];
+                    $("#c2").html(content.replace(/>_/g, ">\r\n"));
+                }
+            }
+            if (password != undefined) {
+                $("#btnlogin").click();
+            }
+        }
+
+    </script>
+</head>
+<body onload="loadcookie()">
+    <div class="titlebar">
+        <div class="titletext">
+            <p class="p_title_text">
+                <span class="p_title_text_span_white">Per</span>
+                <span class="p_title_text_span_gray">form</span><span class="p_title_text_span_gray">ance</span>
+                <span>&nbsp;</span>
+                <span class="p_title_text_span_white">Por</span>
+                <span class="p_title_text_span_gray">tal</span>
+            </p>
+            <input id="logininput" type="submit" class="btn addloginstyle" data-toggle="modal" data-target="#loginModal" value="Login" />
+            <div class="div_login_info"></div>
+        </div>
+    </div>
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
+         aria-labelledby="loginLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="loginModalLabel" style="text-align: center">
+                        Enter credentials to login into ProjectOnline
+                    </h4>
+                </div>
+                <div class="modal-body" style="text-align: center; margin-top: 20px">
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="before-input-width" style="width: 150px;">
+                                <label class="control-label before-input-width" id="ProjectServerUrl">Project Online Url:</label>
+                            </span>
+                            <input id="projectserverurl" name="projectserverurl" type="text" class="form-control inputstyle" placeholder="Enter Site Url" style="width: 300px;" value="https://projectonlineperf.spoppe.com/sites/pwa/">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="before-input-width" style="width: 150px;">
+                                <label class="control-label before-input-width" id="UserName">Email:</label>
+                            </span>
+                            <input id="username" name="username" type="text" class="form-control inputstyle" placeholder="Enter Email..." style="width: 300px;" value="admin@projectonlineperf.ccsctp.net">
+                            <input type="hidden" id="testtest" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="before-input-width" style="width: 150px;">
+                                <label class="control-label before-input-width" id="Password">Password:</label>
+                            </span>
+                            <input id="password" name="password" type="password" class="form-control inputstyle" style="width: 300px;" value="pass@word2">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input id="btnlogin" type="submit" class="btn btn-success" data-dismiss="modal" value="OK" />
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="body-content">
+        <div id="globalMessageDiv"></div>
+        @{Html.RenderPartial("_GlobalScriptOptimization");}
+        @RenderBody()
+    </div>
+    <footer>
+        <p style="color:black;">&copy; @DateTime.Now.Year -Microsoft</p>
+    </footer>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

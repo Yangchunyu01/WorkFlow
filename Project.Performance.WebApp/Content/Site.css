@@ -1,0 +1,381 @@
+﻿body {
+    padding-bottom: 20px;
+    background-color: #ffffff;
+    margin: 0px;
+    color: black;
+    text-align: center;
+    background-size: 100% auto;
+    height: 100%;
+    width: 100%;
+}
+
+.body_div {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+th {
+    text-align: center;
+}
+
+.newproject_radio {
+    color: black;
+    text-align: left;
+}
+
+.ConfigItem {
+    list-style: none;
+    list-style-type: none;
+    padding-left: 0px !important;
+    text-align: left;
+}
+
+    .ConfigItem li {
+        list-style-type: none;
+    }
+
+.before-input-width {
+    text-align: left;
+    line-height: 1;
+    display: table-cell;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.btn-save {
+    text-align: center;
+    line-height: 1;
+    display: table-cell;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.input-width-withradio {
+    text-align: left;
+    width: 200px;
+    float: left;
+}
+
+.div-icon {
+    margin-bottom: 7px;
+    text-align: left;
+}
+.left {
+    width: 42.5%;
+    margin-left:5%
+}
+.leftdiv {
+    border: solid 1px black;
+    width: 100%;
+    height: 450px;
+    border-radius: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.rightdiv {
+    border: solid 1px black;
+    width: 42.5%;
+    height: 450px;
+    margin-right: 5%;
+    padding-top: 0px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    border-radius: 5px;
+    float: right;
+    text-align:left;
+    word-wrap:break-word;
+    word-break:normal
+}
+
+.kv-fileinput-caption {
+    padding-bottom: 0px !important;
+}
+
+textarea {
+    background-color: #ffffff;
+    overflow-y: auto;
+    scrollbar-face-color: #fff; /*滚动条表面颜色设定*/
+    scrollbar-shadow-color: #2D2C4D; /*滚动条下斜面和右斜面颜色设定*/
+    scrollbar-highlight-color: #7D7E94; /*滚动条下斜面和右斜面颜色设定*/
+    scrollbar-3dlight-color: #7D7E94; /*滚动条上边和左边的边沿颜色设定*/
+    scrollbar-darkshadow-color: #2D2C4D; /*滚动条下边和右边边沿颜色设定*/
+    scrollbar-track-color: #ffffff;
+    scrollbar-arrow-color: #7D7E94; /*滚动条上下箭头颜色设定*/
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #555;
+}
+
+
+.inputstyle {
+    margin-left: 30px;
+}
+
+
+#logininput {
+    width: 10%;
+    float: right;
+    background-color: #5a397c;
+    color: white;
+    font-size: 14px;
+    margin-top: 30px;
+    height: 45px;
+    margin-right: 5%;
+    border: 1px solid white;
+}
+
+.div_login_info {
+    float: right;
+    background-color: #5a397c;
+    color: white;
+    font-size: 14px;
+    margin-top: 20px;
+    height: 60px;
+    margin-right: 10px;
+}
+
+.p_title_text {
+    margin: 0px;
+    padding-top: 10px;
+    display: inline;
+}
+
+.p_title_text_span_white {
+    color: white;
+    font-size: 50px;
+}
+
+.p_title_text_span_gray {
+    color: #bea9d3;
+    font-size: 50px;
+}
+
+.p_login_info {
+    color: white;
+    line-height: 20px;
+}
+
+#login_div {
+    float: left;
+    color: white;
+    border: 1px solid white;
+}
+
+#Sync {
+    margin-top: -35px;
+    float: right;
+    height: 30px;
+    border: none;
+    background-image: url('images/icon_refresh.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: white;
+    background-position-y:center;
+}
+
+    #Sync:active {
+        padding-left: 7px;
+    }
+
+.hide {
+    visibility: hidden;
+}
+
+.outputdiv {
+    margin-top: 20px;
+    border-radius: 5px;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+textarea {
+    border: 1px solid #7f9db9;
+    font-size: 14px;
+    width: 448px;
+    color: #000;
+}
+
+#msg1, #msg2, #msg3, #msg4 {
+    display: none;
+}
+
+#ol {
+    position: absolute;
+    z-index: 1;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    background: #ecf0f5;
+    width: 30px;
+    text-align: left;
+}
+
+#li {
+    background: #ffffff;
+    height: 450px;
+    overflow: hidden;
+    width: 30px;
+    border-right: 0;
+    line-height: 20px;
+    margin: 0px;
+    padding: 0px;
+    padding-left: 2px;
+    text-align: center;
+    border-left: none;
+    border-bottom-color: black;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+#c2 {
+    font-family: Arial, Helvetica, sans-serif;
+    height: 450px;
+    margin: 0px;
+    width: 100%;
+    padding-left: 6%;
+    overflow-x: hidden;
+    line-height: 20px;
+    border-bottom-color: black;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-left: none;
+    border-right: none;
+}
+
+.titlebar {
+    background-color: #5a397c;
+    height: 100px;
+    line-height: 100px;
+    text-align: left;
+    padding-left: 5%;
+}
+
+#executeBtn {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    color: white;
+    background-color: #715699;
+    height: 45px;
+    width: 160px;
+    border-radius: 8px;
+    padding-left: 20px;
+    font-size: 16px;
+}
+
+.triangle {
+    height: 0px;
+    width: 0px;
+    border-bottom: solid 7.5px transparent;
+    border-top: solid 7.5px transparent;
+    border-left: solid 15px white;
+    display: inline-block;
+    margin-bottom: -3px;
+    margin-left: 15px;
+}
+
+.openfile {
+    background-image: url("images/icon_open.png");
+    background-repeat: no-repeat;
+    height: 35px;
+    background-position-y:center;
+}
+
+    .openfile:focus {
+        color: #5a397c;
+        background-color: white;
+    }
+
+.downloadfile {
+    background-image:url("images/icon_download.png");
+    background-repeat:no-repeat;
+    height: 35px;
+    background-position-y:center;
+    margin-left: 10px;
+}
+
+    .downloadfile:hover {
+        color: white;
+    }
+
+    .downloadfile:focus {
+        background-color: white;
+        color: white;
+    }
+
+.savefile {
+    background-image: url("images/icon_save.png");
+    background-repeat: no-repeat;
+    height: 35px;
+    margin-left: 10px;
+    background-position-y:center;
+}
+
+    .savefile:focus {
+        background-color: white;
+    }
+
+.samplefile {
+    background-image: url("images/btn_large.png");
+    background-repeat: no-repeat;
+    height: 35px;
+    float:right;
+    color: white;
+    text-align: center;
+    background-position-y:center;
+}
+
+    .samplefile:hover {
+        color: white;
+    }
+
+    .samplefile:focus {
+        background-color: #5a397c;
+    }
+
+.outputtitle {
+    text-align: left;
+    background-color: #5a397c;
+    height: 30px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#output {
+    border-top: none;
+    height: 200px;
+    width: 100%;
+}
+
+.panel-group {
+    margin-left: 0px !important;
+}
+.globalMessageBoxtrue {
+    position: fixed;
+    margin: 0 auto;
+    height: 40px;
+    width: 50%;
+    min-width: 200px;
+    padding-top: 10px;
+    text-align: center;
+    color: #468847;
+    background-color: #dff0d8;
+}
+
+.globalMessageBoxfalse {
+    position: fixed;
+    margin: 0 auto;
+    height: 40px;
+    width: 50%;
+    min-width: 200px;
+    padding-top: 10px;
+    text-align: center;
+    color: #b94a48;
+    background-color: #f2dede;
+}

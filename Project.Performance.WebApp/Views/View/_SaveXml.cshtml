@@ -1,0 +1,59 @@
+﻿<div class="modal fade" id="SaveModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:120%">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="SaveModalLabel">
+                    Enter FileName
+                </h4>
+            </div>
+            <div class="modal-body">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <label class="control-label" style="width:10%;padding-right:25px;padding-left:0px;">FilePath:</label>
+                        </span>
+                        <div class="form-control" style="text-align:left;width:53.24%">\\JIN-PT001\Config\UserFiles\@this.ViewBag.Data\</div>
+                        <input id="filename" name="filename" type="text" class="form-control" style="border-left:none;width:100%">
+                        <label class="control-label form-control" style="width:5px; border-right: none;">.xml</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    Close
+                </button>
+                <input id="submitfilename" type="submit" class="btn btn-success" data-dismiss="modal" value="Submit" />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#SaveModal").on("shown.bs.modal", function () {
+        $("#filename").val("");
+    });
+    $("#submitfilename").click(function () {
+        $.ajax({
+            url: '@Url.Action("SaveFile", "Functions")',
+            dataType: "json",
+            data: {
+                model: $("#c2").val(),
+                fileName: $("#filename").val()
+            },
+            type: "Post",
+            success: function (json) {
+                ShowJsonMessage(json);
+            },
+            error: function (XMLHttpRequest, message) {
+                var json = { success: false, Message: message };
+                ShowJsonMessage(json);
+            }
+        });
+    });
+</script>
